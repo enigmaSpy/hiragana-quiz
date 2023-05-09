@@ -13,7 +13,7 @@ const Form = ({ charData, removeChar }) => {
     };
 
     const checkAnswer = () => {
-        if (answer === charData[randomNumber].roumaji) {
+        if (answer.to === charData[randomNumber].roumaji) {
             setIsCorrect(false);
             const id = charData[randomNumber].id;
             removeChar(id)
