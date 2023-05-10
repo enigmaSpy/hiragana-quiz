@@ -68,7 +68,7 @@ const Form = ({ charData, removeChar }) => {
 
             <FormContent>
                 <p>
-                    <Input isCorrect={!isCorrect&&!showInput} ref={inputFocus} type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+                    <Input isCorrect={!isCorrect&&!showInput} disabled={showInput} ref={inputFocus} type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
                 </p>
                 {!isCorrect ? (
                     <>
