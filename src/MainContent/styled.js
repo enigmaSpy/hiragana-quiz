@@ -22,13 +22,22 @@ export const FormContent = styled.form`
 `;
 
 export const Input = styled.input`
-
+  
+  position: absolute;
+  z-index:-1;
+  height:0;
   font-size: 16px;
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 
+    ${({isCorrect})=>isCorrect&&css`
+    position: relative;
+    z-index:1;
+        height:auto;
+
+    `}
 
 &:focus {
   outline: none;

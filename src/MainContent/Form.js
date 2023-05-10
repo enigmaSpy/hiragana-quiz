@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { CorrectAnswer, FormContent, ContentWrapper, CurrentChar, Button, Input } from "./styled";
-import {textToSpeak,cancelSpeak} from '../textToSpeach';
+import { textToSpeak, cancelSpeak } from '../textToSpeach';
 
 const Form = ({ charData, removeChar }) => {
     const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * charData.length));
     const [answer, setAnswer] = useState("");
     const [isCorrect, setIsCorrect] = useState(false);
+    const inputFocus = useRef(null);
+    const [showInput, setShowInput] = useState(false);
+
+    const setFocus = () => {
+        inputFocus.current.focus();
+    }
 
     const nextChar = () => {
 
@@ -16,10 +22,17 @@ const Form = ({ charData, removeChar }) => {
 
     const checkAnswer = () => {
         if (answer.toLowerCase() === charData[randomNumber].roumaji) {
-            setIsCorrect(false);
             const id = charData[randomNumber].id;
-            removeChar(id);
-            setRandomNumber(Math.floor(Math.random() * charData.length));
+
+            setIsCorrect(false);
+            textToSpeak(charData[randomNumber].kana);
+            setShowInput(true);
+            setTimeout(() => {
+                setShowInput(false);
+                removeChar(id);
+                setRandomNumber(Math.floor(Math.random() * charData.length));
+            }, 1000)
+
 
         } else {
             textToSpeak(charData[randomNumber].kana);
@@ -31,11 +44,13 @@ const Form = ({ charData, removeChar }) => {
     const handleCheck = (e) => {
         e.preventDefault();
         checkAnswer();
+        setFocus();
     };
 
     const handleNextChar = (e) => {
         e.preventDefault();
         nextChar();
+        setFocus();
     }
 
 
@@ -50,11 +65,12 @@ const Form = ({ charData, removeChar }) => {
             </CorrectAnswer>
 
             <FormContent>
+                <p>
+                    <Input isCorrect={!isCorrect&&!showInput} ref={inputFocus} type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+                </p>
                 {!isCorrect ? (
                     <>
-                        <p>
-                            <Input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
-                        </p>
+
                         <Button onClick={handleCheck}>Sprawdź</Button>
                     </>
                 )
