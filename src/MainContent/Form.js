@@ -45,13 +45,14 @@ const Form = ({ charData, removeChar }) => {
     const handleCheck = (e) => {
         e.preventDefault();
         checkAnswer();
-        setFocus();
+        
     };
 
     const handleNextChar = (e) => {
         e.preventDefault();
         setAnswer("")
         nextChar();
+        setFocus();
     }
 
 
