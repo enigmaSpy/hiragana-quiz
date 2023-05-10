@@ -24,6 +24,7 @@ export const FormContent = styled.form`
 export const Input = styled.input`
   
   position: absolute;
+  width:0;
   z-index:-1;
   height:0;
   font-size: 16px;
@@ -36,6 +37,7 @@ export const Input = styled.input`
     position: relative;
     z-index:1;
         height:auto;
+        width:auto;
 
     `}
 

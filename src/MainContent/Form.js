@@ -31,6 +31,7 @@ const Form = ({ charData, removeChar }) => {
                 setShowInput(false);
                 removeChar(id);
                 setRandomNumber(Math.floor(Math.random() * charData.length));
+                
             }, 1000)
 
 
@@ -49,8 +50,8 @@ const Form = ({ charData, removeChar }) => {
 
     const handleNextChar = (e) => {
         e.preventDefault();
+        setAnswer("")
         nextChar();
-        setFocus();
     }
 
 
