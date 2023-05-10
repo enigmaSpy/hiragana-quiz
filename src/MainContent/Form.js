@@ -13,10 +13,10 @@ const Form = ({ charData, removeChar }) => {
     };
 
     const checkAnswer = () => {
-        if (answer.to === charData[randomNumber].roumaji) {
+        if (answer.toLowerCase() === charData[randomNumber].roumaji) {
             setIsCorrect(false);
             const id = charData[randomNumber].id;
-            removeChar(id)
+            removeChar(id);
             setRandomNumber(Math.floor(Math.random() * charData.length));
 
         } else {
