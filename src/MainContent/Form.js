@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CorrectAnswer, FormContent, ContentWrapper, CurrentChar, Button, Input } from "./styled";
+import {textToSpeak,cancelSpeak} from '../textToSpeach';
 
 const Form = ({ charData, removeChar }) => {
     const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * charData.length));
@@ -10,6 +11,7 @@ const Form = ({ charData, removeChar }) => {
 
         setRandomNumber(Math.floor(Math.random() * charData.length));
         setIsCorrect(false);
+        cancelSpeak();
     };
 
     const checkAnswer = () => {
@@ -20,6 +22,7 @@ const Form = ({ charData, removeChar }) => {
             setRandomNumber(Math.floor(Math.random() * charData.length));
 
         } else {
+            textToSpeak(charData[randomNumber].kana);
             setIsCorrect(true);
         }
         setAnswer("");
