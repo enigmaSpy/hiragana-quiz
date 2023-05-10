@@ -11,3 +11,6 @@ body{
   background-color: #313131;
   color: #fff;
 }
+button:hover{
+  cursor: pointer;
+}

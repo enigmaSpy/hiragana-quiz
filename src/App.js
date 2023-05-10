@@ -1,7 +1,7 @@
 import { useHiragana } from './useHiragana';
-import hiraganaData from './hiragana.json';
 import MainContent from './MainContent/Form'
 import Header from './Header'
+import StartButton from './StartButton';
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
     <main>
       <Header/>
      
-      {charData.length > 0 ? (<MainContent charData={charData} removeChar={removeChar}/>):(<button onClick={handleStart}>Start</button>)}
+      {charData.length > 0 ? (<MainContent charData={charData} removeChar={removeChar}/>):(<StartButton handleStart={handleStart}/>)}
     </main>
   );
 }
