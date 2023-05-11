@@ -5,81 +5,70 @@ import { textToSpeak, cancelSpeak } from '../textToSpeach';
 const Form = ({ charData, removeChar }) => {
     const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * charData.length));
     const [answer, setAnswer] = useState("");
-    const [isCorrect, setIsCorrect] = useState(false);
+    const [nextStep, setNextStep]=useState(true);
+    const [isCorrect, setIsCorrect] = useState(true);
     const inputFocus = useRef(null);
-    const [showInput, setShowInput] = useState(false);
 
-    const setFocus = () => {
-        inputFocus.current.focus();
+    const getNewChar = ()=>{
+        cancelSpeak();
+        setRandomNumber(Math.floor(Math.random() * charData.length));
+        setIsCorrect(true);
+        setNextStep(true);
+        setAnswer("");
     }
 
-    const nextChar = () => {
 
-        setRandomNumber(Math.floor(Math.random() * charData.length));
-        setIsCorrect(false);
-        cancelSpeak();
-    };
+   const correctAnswer =()=>{
+    removeChar(charData[randomNumber].id);
+    setIsCorrect(true);
+   }
 
-    const checkAnswer = () => {
-        if (answer.toLowerCase() === charData[randomNumber].roumaji) {
-            const id = charData[randomNumber].id;
+   const incorrectAnswer =()=>{
+    textToSpeak(charData[randomNumber].kana);
+    setIsCorrect(false);
+   }
 
-            setIsCorrect(false);
-            textToSpeak(charData[randomNumber].kana);
-            setShowInput(true);
-            setTimeout(() => {
-                setShowInput(false);
-                removeChar(id);
-                setRandomNumber(Math.floor(Math.random() * charData.length));
-                
-            }, 1000)
-
-
-        } else {
-            textToSpeak(charData[randomNumber].kana);
-            setIsCorrect(true);
+    const checkAnswer =()=>{
+        if(charData[randomNumber].roumaji === answer.toLowerCase()){
+            correctAnswer();
+            getNewChar();
         }
-        setAnswer("");
-    };
+        else{
+            incorrectAnswer()
+            setNextStep(false)
+        }
 
-    const handleCheck = (e) => {
+    }
+   
+    const handleCheckAnswer=(e)=>{
         e.preventDefault();
         checkAnswer();
-        
-    };
-
-    const handleNextChar = (e) => {
-        e.preventDefault();
-        setAnswer("")
-        nextChar();
-        setFocus();
     }
 
+    const handleNext = (e)=>{
+        e.preventDefault();
+        getNewChar();
+    }
+
+    const handleSpeak = ()=>{
+        textToSpeak(charData[randomNumber].kana);
+    }
 
     return (
         <ContentWrapper>
             <p>Pozostało {charData.length} znaków</p>
-
-            <CurrentChar>{charData[randomNumber].kana}</CurrentChar>
-
-            <CorrectAnswer isCorrect={isCorrect}>
+            <CurrentChar onClick={handleSpeak}>{charData[randomNumber].kana}</CurrentChar>
+            <CorrectAnswer isCorrect={!isCorrect}>
                 Poprawna odpowiedź to "{charData[randomNumber].roumaji}"
             </CorrectAnswer>
 
             <FormContent>
                 <p>
-                    <Input isCorrect={!isCorrect&&!showInput} disabled={showInput} ref={inputFocus} type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+                    <Input isCorrect={isCorrect} ref={inputFocus} type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} />
                 </p>
-                {!isCorrect ? (
-                    <>
-
-                        <Button onClick={handleCheck}>Sprawdź</Button>
-                    </>
-                )
-                    :
-                    (
-                        <Button onClick={handleNextChar}>Dalej</Button>
-                    )}
+                {
+                    nextStep ? (<Button onClick={handleCheckAnswer}>Sprawdź</Button>):(<Button onClick={handleNext}>Dalej</Button>)
+                }   
             </FormContent>
         </ContentWrapper>
     );
